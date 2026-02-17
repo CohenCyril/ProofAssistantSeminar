@@ -1,0 +1,26 @@
+opam-version: "2.0"
+maintainer: "Quentin Vermande <quentin.vermande@orange.fr>"
+version: "dev"
+
+homepage: "https://github.com/Tragicus/ProofAssistantSeminar"
+dev-repo: "git+https://github.com/Tragicus/ProofAssistantSeminar.git"
+bug-reports: "https://github.com/Tragicus/ProofAssistantSeminar/issues"
+license: "LGPL-3.0-or-later"
+
+synopsis: "A Seminar on Rocq"
+description: """
+Go to the seminar.
+"""
+
+build: [make "-j%{jobs}%"]
+install: [make "install"]
+depends: [
+  "coq" {>= "8.20" & < "9.2"}
+]
+
+tags: [
+  "category:Computer Science"
+]
+authors: [
+  "Quentin Vermande"
+]

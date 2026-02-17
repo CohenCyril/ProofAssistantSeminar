@@ -1,0 +1,12 @@
+{
+    "name": "Trocq",
+    "build": {
+        "dockerfile": "../Dockerfile"
+    },
+    "postAttachCommand": "make -j8 -k",
+    "customizations": {
+        "vscode": {
+            "extensions": ["ejgallego.coq-lsp", "gares.elpi-lang", "gares.coq-elpi-lang"],
+        }
+    }
+}
