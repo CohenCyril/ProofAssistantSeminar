@@ -125,7 +125,7 @@ Proof.
   rewrite add0n.
   reflexivity.
 
-(* Next, we have the induction case. [induction n.] introduce an induction
+(* Next, we have the induction case. [induction n.] introduces an induction
    hypothesis [IHn] stating our goal for [n], that is [n + 0 = n], and we have
    to prove the goal for [S n], that is [S n + 0 = S n].
    Hint: use [addSn].

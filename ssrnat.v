@@ -1,4 +1,5 @@
 Require Import magic.
+From Corelib Require Import ssreflect.
 
 (** 1. Tutorial *)
 
@@ -12,15 +13,17 @@ Goal forall n : nat, n + 3 = n + 3.
 Proof.
 (* The goal here is the theorem [forall n : nat, n + 3 = n + 3].
 
-   We solve goals in Rocq using tactics, which are instructions we give to the
-   proof assistant. Rocq executes these instructions to make progress in the
-   proof. We end every tactic with a dot [.] to let Rocq know that we are done
-   writing the tactic.
+   We solve goals in Rocq with SsrReflect using tactics and tacticals, which are
+   instructions we give to the proof assistant. Rocq executes these instructions
+   to make progress in the proof. We end every tactic with a dot [.] to let Rocq
+   know that we are done writing the tactic.
 
    We will first introduce an arbitrary number [n] and prove [n + 3 = n + 3] on
-   this number. The tactic we use to introduce objects is [intros].
+   this number. To introduce objects, we use the tactical [=>], which can be put
+   after any tactic. Since we only want to introduce objects, we will use a base
+   tactic [move] which does essentially nothing.
 
-   Try [intros n.].
+   Try [move=> n.].
 *)
 
 
@@ -39,8 +42,8 @@ Goal forall n m : nat, n = 3 * m -> n + 1 = 3 * m + 1.
 Proof.
 (* Now, the goal is [forall n m : nat, n = 3 * m -> n + 1 = 3 * m + 1].
    We will introduce two natural numbers [n] and [m], assume that [n = 3 * m]
-   and prove that [n + 1 = 3 * m + 1]. The tactic [intros] can be used to
-   introduce hypotheses, as in [intros n m nE.].
+   and prove that [n + 1 = 3 * m + 1]. The tactical [=>] can be used to
+   introduce hypotheses, as in [move=> n m nE.].
 *)
 
 
@@ -63,10 +66,22 @@ Qed.
 
 Goal forall n m : nat, n = 3 * m -> n + 1 = 3 * m + 1.
 Proof.
-  intros n m nE.
+  move=> n m nE.
 (* We can also rewrite equalities backwards, in other words replacing the
-   right-hand side by the left-hand side in the goal, using [rewrite <-]. Try
-   [rewrite <- nE.] and see what happens. Then conclude the proof as before.
+   right-hand side by the left-hand side in the goal, by adding a minus [-]
+   sign before the equation to rewrite. Try [rewrite -nE.] and see what
+   happens. Then conclude the proof as before.
+*)
+
+
+
+Qed.
+
+Goal forall n m : nat, n = 2 * m -> m = 6 -> (n - 5) * m = 42.
+Proof.
+  move=> n m nE mE.
+(* [rewrite] actually accepts any number of arguments, which are all equalities
+   that get rewritten one after the other. Try [rewrite nE mE.].
 *)
 
 
@@ -100,15 +115,16 @@ Search (_ + _).
 
 Goal forall n m, (0 + n) + (0 + m) = (0 + n) + m.
 Proof.
-intros n m.
+move=> n m.
 (* To solve this goal, we would like to rewrite [0 + m] into [m]. However, if we
    were to simply write [rewrite add0n], Rocq would replace [0 + n] with [n] (
    try it).
    So we need to be more precise. [add0n] is a proof of the statement
    [forall n, 0 + n = n], and we can write instantiate the variable [n], as in
-   [add0n m], to get a proof of [0 + m = m]. Since [rewrite] expects only one
-   argument, we have to put parentheses around [add0n m], as in
-   [rewrite (add0n m).].
+   [add0n m], to get a proof of [0 + m = m]. Since [rewrite] accepts several
+   arguments, we have to put parentheses around [add0n m], as in 
+   [rewrite (add0n m).], lest [rewrite] interprets the command as rewriting
+   [add0n] and then [m], which does not make sense.
 *)
 
 
@@ -121,13 +137,17 @@ Proof.
    additions by [0] on the left, we prove that we can also simplify on
    the right.
    Like most of the proof we will do today involving natural numbers, we
-   reason by induction on [n] using the eponymous tactic.
-   Try [induction n.].
+   reason by induction on [n] using the tactic [elim]. However, [elim] expects
+   the goal to be of the form [forall n, ...] and does an induction on this [n].
+   To "revert" the [n] from the context back in the goal, we use the
+   tactical [:], which can be put after any tactic, and reverts objects before
+   applying the tactic.
+   Try [move: n.] and then [elim.].
  *)
 
 
 
-(* [induction n.] leaves two subgoals. The first one is the base case [n = 0],
+(* [elim.] leaves two subgoals. The first one is the base case [n = 0],
    that is [0 + 0 = 0]. Give it a try, and keep reading when the base case is
    proved.
    Hint 1: use [add0n].
@@ -136,7 +156,7 @@ Proof.
 
 
 
-(* Next, we have the induction case. [induction n.] introduces an induction
+(* Next, we have the induction case. [elim.] introduces an induction
    hypothesis [IHn] stating our goal for [n], that is [n + 0 = n], and we have
    to prove the goal for [S n], that is [S n + 0 = S n].
    Hint: use [addSn].
@@ -150,8 +170,7 @@ Theorem addnS n m : n + S m = S (n + m).
 Proof.
 (* Let us also do the counterpart of [addSn], where we simplify additions with
    a successor on the right.
-   Hint: We know how to deal with 0 and S on the left of additions, so let us
-    reason by induction on n.
+   Can you start the induction proof with just one tactic?
 *)
 
 
@@ -186,7 +205,7 @@ Qed.
 *)
 Theorem addCA n m k : n + m + k = n + k + m.
 Proof.
-(* Hint: Recall the [rewrite <-] syntax for rewriting an equality from right to
+(* Hint: Recall the [-] syntax for rewriting an equality from right to
    left. You will also need to make some statements more precise in a rewrite,
    so that Rocq finds the correct term you want to rewrite, as in [add0n m]
    above.
@@ -262,7 +281,7 @@ Qed.
 
 Theorem mulnD n m k : n * (m + k) = n * m + n * k.
 Proof.
-(* How would you prove this? Can you do it with just 5 tactics? *)
+(* How would you prove this? Can you do it with just 2 tactics? *)
 
 
 

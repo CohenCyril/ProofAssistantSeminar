@@ -14,3 +14,7 @@ ADD Makefile /home/rocq/ProofAssistantSeminar/Makefile
 ADD magic.v /home/rocq/ProofAssistantSeminar/magic.v
 ADD nat.v /home/rocq/ProofAssistantSeminar/nat.v
 ADD nat_solution.v /home/rocq/ProofAssistantSeminar/nat_solution.v
+ADD nat_golf.v /home/rocq/ProofAssistantSeminar/nat_golf.v
+ADD ssrnat.v /home/rocq/ProofAssistantSeminar/ssrnat.v
+ADD ssrnat_solution.v /home/rocq/ProofAssistantSeminar/ssrnat_solution.v
+ADD ssrnat_golf.v /home/rocq/ProofAssistantSeminar/ssrnat_golf.v
