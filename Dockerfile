@@ -4,10 +4,13 @@ RUN opam update -y
 RUN opam install -y vsrocq-language-server
 RUN mkdir /home/rocq/ProofAssistantSeminar
 # ADD https://github.com/rocq-community/ProofAssistantSeminar.git /home/rocq/ProofAssistantSeminar
-ADD . /home/rocq/ProofAssistantSeminar
+ADD rocq-ProofAssistantSeminar-dev.opam /home/rocq/ProofAssistantSeminar/rocq-ProofAssistantSeminar-dev.opam
 USER root
 RUN chown -R rocq:rocq ProofAssistantSeminar
 USER rocq
-RUN rm -rf ProofAssistantSeminar/.git
 RUN opam pin ProofAssistantSeminar -yn
 RUN opam install -y --deps-only rocq-ProofAssistantSeminar-dev
+ADD Makefile /home/rocq/ProofAssistantSeminar/Makefile
+ADD magic.v /home/rocq/ProofAssistantSeminar/magic.v
+ADD nat.v /home/rocq/ProofAssistantSeminar/nat.v
+ADD nat_solution.v /home/rocq/ProofAssistantSeminar/nat_solution.v

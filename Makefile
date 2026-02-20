@@ -1,0 +1,2 @@
+all:
+	coqc magic.v
