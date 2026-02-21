@@ -13,7 +13,7 @@ Goal forall n : nat, n + 3 = n + 3.
 Proof.
 (* The goal here is the theorem [forall n : nat, n + 3 = n + 3].
 
-   We solve goals in Rocq with SsrReflect using tactics and tacticals, which are
+   We solve goals in Rocq with SSReflect using tactics and tacticals, which are
    instructions we give to the proof assistant. Rocq executes these instructions
    to make progress in the proof. We end every tactic with a dot [.] to let Rocq
    know that we are done writing the tactic.
