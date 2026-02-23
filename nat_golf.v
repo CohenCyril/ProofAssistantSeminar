@@ -54,7 +54,7 @@ Theorem addC n m : n + m = m + n.
 Proof.
 induction n.
   rewrite addn0; reflexivity.
-simpl; rewrite addnS; rewrite IHn; reflexivity.
+simpl; rewrite addnS, IHn; reflexivity.
 Qed.
 
 Theorem addA n m k : n + (m + k) = n + m + k.
@@ -65,7 +65,7 @@ simpl; rewrite IHn; reflexivity.
 Qed.
 
 Theorem addCA n m k : n + m + k = n + k + m.
-Proof. rewrite <- addA; rewrite (addC m); rewrite addA; reflexivity. Qed.
+Proof. rewrite <- addA, (addC m), addA; reflexivity. Qed.
 
 
 (** Multiplication *)
@@ -97,31 +97,31 @@ Theorem mulnS n m : n * S m = n * m + n.
 Proof.
 induction n.
   reflexivity.
-simpl; rewrite addnS; rewrite IHn; rewrite addA; reflexivity.
+simpl; rewrite addnS, IHn, addA; reflexivity.
 Qed.
 
 Theorem mulC n m : n * m = m * n.
 Proof.
 induction n.
   rewrite muln0; reflexivity.
-simpl; rewrite mulnS; rewrite addC; rewrite IHn; reflexivity.
+simpl; rewrite mulnS, addC, IHn; reflexivity.
 Qed.
 
 Theorem mulDn n m k : (n + m) * k = n * k + m * k.
 Proof.
 induction n.
   reflexivity.
-simpl; rewrite IHn; rewrite addA; reflexivity.
+simpl; rewrite IHn, addA; reflexivity.
 Qed.
 
 Theorem mulnD n m k : n * (m + k) = n * m + n * k.
 Proof.
-rewrite mulC; rewrite mulDn; rewrite mulC; rewrite (mulC k); reflexivity.
+rewrite mulC, mulDn, mulC, (mulC k); reflexivity.
 Qed.
 
 Theorem mulA n m k : n * (m * k) = n * m * k.
 Proof.
 induction n.
   reflexivity.
-simpl; rewrite mulDn; rewrite IHn; reflexivity.
+simpl; rewrite mulDn, IHn; reflexivity.
 Qed.

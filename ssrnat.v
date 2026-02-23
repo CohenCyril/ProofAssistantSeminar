@@ -80,8 +80,9 @@ Qed.
 Goal forall n m : nat, n = 2 * m -> m = 6 -> (n - 5) * m = 42.
 Proof.
   move=> n m nE mE.
-(* [rewrite] actually accepts any number of arguments, which are all equalities
-   that get rewritten one after the other. Try [rewrite nE mE.].
+(* [rewrite] actually accepts any number of arguments, separated by commas,
+   which are all equalities that get rewritten one after the other.
+   Try [rewrite nE mE.].
 *)
 
 
@@ -93,7 +94,7 @@ Qed.
 (* Natural numbers are defined by two rules:
    - [0] is a natural number, and
    - if [n] is a natural number, then its successor [S n] is a natural number.
-   Not that the natural numbers we have encountered so far are all built using
+   Note that the natural numbers we have encountered so far are all built using
    these two rules. For example, [3] is merely a notation for [S (S (S 0))].
 
    Similarly, the addition is defined by two rules:
@@ -120,7 +121,7 @@ move=> n m.
    were to simply write [rewrite add0n], Rocq would replace [0 + n] with [n] (
    try it).
    So we need to be more precise. [add0n] is a proof of the statement
-   [forall n, 0 + n = n], and we can write instantiate the variable [n], as in
+   [forall n, 0 + n = n], and we can instantiate the variable [n], as in
    [add0n m], to get a proof of [0 + m = m]. Since [rewrite] accepts several
    arguments, we have to put parentheses around [add0n m], as in 
    [rewrite (add0n m).], lest [rewrite] interprets the command as rewriting
@@ -222,7 +223,7 @@ Qed.
    at the left argument:
    - [0 * n = 0] for any [n], and
    - [S n * m = m + n * m] for any [n], [m].
-   We will use the names [add0n] and [addSn] to refer to these rules.
+   We will use the names [mul0n] and [mulSn] to refer to these rules.
 *)
 
 (* Let us start with an example combining the rules defining the multiplication
