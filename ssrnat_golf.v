@@ -50,24 +50,24 @@ Theorem addn0 n : n + 0 = n.
    In our case, [elim] produces two subgoals, so we have one pipe. On the first
    subgoal we do nothing, and on the second we introduce one object with an
    auto-generated name and rewrite the equation that follows from right to left.
-   Everything introduction pattern that follows is applied to every subgoal.
-*)
-Proof. by elim: n => [|? <-]. Qed.
+   Every introduction pattern that follows is applied to every subgoal.
 
-Theorem addnS n m : n + S m = S (n + m).
-(* We can ask Rocq to do partial computations in the middle of a sequence of
-   introductions using [/=].
+   We can also ask Rocq to do partial computations in the middle of a sequence
+   of introductions using [/=].
    Try removing it and understand why it fails.
 *)
+Proof. by elim: n => [|? /= ->]. Qed.
+
+Theorem addnS n m : n + S m = S (n + m).
 Proof. by elim: n => [|n /= ->]. Qed.
 
 Theorem addC n m : n + m = m + n.
-(* Two new things here.
+(* 
+   Two new things here.
 
-   One is the sequencing of tactics using [;]. The tactic on the left is
-   executed first, and then the tactic on the right is executed on every
-   subgoal. In this case, the [rewrite] is executed on the two subgoals
-   produced by [elim].
+   One is the sequencing of tactics with [;]. The tactic on the left is executed
+   first, and then the tactic on the right is executed on every subgoal. In this
+   case, the [rewrite] is executed on the two subgoals produced by [elim].
 
    Second is the argument of the [rewrite]. We can give as argument a tuple of
    equations, and [rewrite] rewrites the first one it succeeds to rewrite. In
@@ -96,13 +96,21 @@ Proof. by rewrite -addA (addC m) addA. Qed.
    to warm up.
 *)
 Theorem mul1n n : 1 * n = n.
-Proof. by rewrite mulSn mul0n addn0. Qed.
+(* [n + 1] computes to [n + 0], so [mul1n] and [addn0] are actually the same
+   theorem.
+   We apply a theorem using the eponymous tactic [apply]. This tactic takes no
+   argument and applies the first hypothesis of the conclusion to the rest of
+   the conclusion. Thus, we start by putting the [addn0] in the conclusion as a
+   hypothesis and then call [apply]. We use [exact], which is synonymous to
+   [by apply], which ensures that the tactic closes the goal.
+*)
+Proof. exact: addn0. Qed.
 
 (* Before proving the usual results on multiplication, we first do the
    simplification rules on the right argument.
 *)
 Theorem muln0 n : n * 0 = 0.
-Proof. by elim: n => [|? /= ->]. Qed.
+Proof. by elim: n. Qed.
 
 Theorem mulnS n m : n * S m = n * m + n.
 (* We can close a trivial subgoal during a sequence of introductions using [//],
@@ -123,7 +131,7 @@ Theorem mulDn n m k : (n + m) * k = n * k + m * k.
 Proof. by elim: n => [//|n /= ->]; rewrite addA. Qed.
 
 Theorem mulnD n m k : n * (m + k) = n * m + n * k.
-Proof. by rewrite mulC mulDn mulC (mulC k). Qed.
+Proof. by rewrite mulC mulDn !(mulC n). Qed.
 
 Theorem mulA n m k : n * (m * k) = n * m * k.
 Proof. by elim: n => [//|n /= ->]; rewrite mulDn. Qed.

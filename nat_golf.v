@@ -36,37 +36,25 @@ Theorem addn0 n : n + 0 = n.
 (* We can chain tactics using [;]. The tactic on the left is executed first, and
    then the tactic on the right is executed on every subgoal. Besides, we can
    ask Rocq to do partial computations using the tactic [simpl].
+   When the first tactic produces several subgoals, we can specify which tactics
+   we want to use on each subgoal with the syntax [[ | ... | ]] where the pipes
+   separate the tactics for each subgoal. In the example below, [induction n]
+   produces two subgoals. On the second one we do simplifications and rewrite
+   [IHn]. Then, on both subgoals we use [reflexivity].
 *)
-Proof.
-  induction n.
-    reflexivity.
-  simpl; rewrite IHn; reflexivity.
-Qed.
+Proof. induction n; [|simpl; rewrite IHn]; reflexivity. Qed.
 
 Theorem addnS n m : n + S m = S (n + m).
-Proof.
-induction n.
-  reflexivity.
-simpl; rewrite IHn; reflexivity.
-Qed.
+Proof. induction n; [|simpl; rewrite IHn]; reflexivity. Qed.
 
 Theorem addC n m : n + m = m + n.
-Proof.
-induction n.
-  rewrite addn0; reflexivity.
-simpl; rewrite addnS, IHn; reflexivity.
-Qed.
+Proof. induction n; [rewrite addn0|simpl; rewrite addnS, IHn]; reflexivity. Qed.
 
 Theorem addA n m k : n + (m + k) = n + m + k.
-Proof.
-induction n.
-  reflexivity.
-simpl; rewrite IHn; reflexivity.
-Qed.
+Proof. induction n; [|simpl; rewrite IHn]; reflexivity. Qed.
 
 Theorem addCA n m k : n + m + k = n + k + m.
 Proof. rewrite <- addA, (addC m), addA; reflexivity. Qed.
-
 
 (** Multiplication *)
 
@@ -81,47 +69,33 @@ Proof. rewrite <- addA, (addC m), addA; reflexivity. Qed.
    to warm up.
 *)
 Theorem mul1n n : 1 * n = n.
-Proof. simpl; rewrite addn0; reflexivity. Qed.
+(* [n + 1] computes to [n + 0], so [mul1n] and [addn0] are actually the same
+   theorem.
+   We apply a theorem using the eponymous tactic [apply], which takes as only
+   argument the theorem to apply.
+*)
+Proof. apply addn0. Qed.
 
 (* Before proving the usual results on multiplication, we first do the
    simplification rules on the right argument.
 *)
 Theorem muln0 n : n * 0 = 0.
-Proof.
-induction n.
-  reflexivity.
-simpl; rewrite IHn; reflexivity.
-Qed.
+Proof. induction n; [|simpl; rewrite IHn]; reflexivity. Qed.
 
 Theorem mulnS n m : n * S m = n * m + n.
-Proof.
-induction n.
-  reflexivity.
-simpl; rewrite addnS, IHn, addA; reflexivity.
-Qed.
+Proof. induction n; [|simpl; rewrite addnS, IHn, addA]; reflexivity. Qed.
 
 Theorem mulC n m : n * m = m * n.
 Proof.
-induction n.
-  rewrite muln0; reflexivity.
+induction n; [rewrite muln0; reflexivity|].
 simpl; rewrite mulnS, addC, IHn; reflexivity.
 Qed.
 
 Theorem mulDn n m k : (n + m) * k = n * k + m * k.
-Proof.
-induction n.
-  reflexivity.
-simpl; rewrite IHn, addA; reflexivity.
-Qed.
+Proof. induction n; [|simpl; rewrite IHn, addA]; reflexivity. Qed.
 
 Theorem mulnD n m k : n * (m + k) = n * m + n * k.
-Proof.
-rewrite mulC, mulDn, mulC, (mulC k); reflexivity.
-Qed.
+Proof. rewrite mulC, mulDn, !(mulC n); reflexivity. Qed.
 
 Theorem mulA n m k : n * (m * k) = n * m * k.
-Proof.
-induction n.
-  reflexivity.
-simpl; rewrite mulDn, IHn; reflexivity.
-Qed.
+Proof. induction n; [|simpl; rewrite mulDn, IHn]; reflexivity. Qed.
