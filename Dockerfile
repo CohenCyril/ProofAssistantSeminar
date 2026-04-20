@@ -18,9 +18,10 @@ RUN opam pin ProofAssistantSeminar -yn
 RUN opam install -y --deps-only rocq-ProofAssistantSeminar-dev
 ADD Makefile /home/rocq/ProofAssistantSeminar/Makefile
 ADD magic.v /home/rocq/ProofAssistantSeminar/magic.v
-ADD nat.v /home/rocq/ProofAssistantSeminar/nat.v
-ADD nat_solution.v /home/rocq/ProofAssistantSeminar/nat_solution.v
-ADD nat_golf.v /home/rocq/ProofAssistantSeminar/nat_golf.v
-ADD ssrnat.v /home/rocq/ProofAssistantSeminar/ssrnat.v
-ADD ssrnat_solution.v /home/rocq/ProofAssistantSeminar/ssrnat_solution.v
-ADD ssrnat_golf.v /home/rocq/ProofAssistantSeminar/ssrnat_golf.v
+ADD tuto1_nat.v /home/rocq/ProofAssistantSeminar/nat.v
+ADD tuto1_nat_solution.v /home/rocq/ProofAssistantSeminar/tuto1_nat_solution.v
+ADD tuto1_nat_golf.v /home/rocq/ProofAssistantSeminar/tuto1_nat_golf.v
+ADD tuto1_ssrnat.v /home/rocq/ProofAssistantSeminar/tuto1_ssrnat.v
+ADD tuto1_ssrnat_solution.v /home/rocq/ProofAssistantSeminar/tuto1_ssrnat_solution.v
+ADD tuto1_ssrnat_golf.v /home/rocq/ProofAssistantSeminar/tuto1_ssrnat_golf.v
+ADD tuto3_automation.v /home/rocq/ProofAssistantSeminar/tuto3_automation.v
