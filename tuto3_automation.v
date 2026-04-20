@@ -24,7 +24,7 @@
 (**********************************************************)
 (* From Section 4. you will need  the following packages: *)
 (* - rocq-mathcomp-ssreflect                              *)
-(* - rocq-mathcomp-stdlib                                 *)
+(* - rocq-stdlib                                 *)
 (* - rocq-mathcomp-zify                                   *)
 (* - rocq-mathcomp-algebra                                *)
 (* - rocq-mathcomp-algebra-tactics                        *)
