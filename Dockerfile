@@ -5,7 +5,7 @@ RUN ulimit -s 256000
 RUN opam install -y vsrocq-language-server
 RUN opam install -y rocq-mathcomp-ssreflect
 RUN opam install -y rocq-mathcomp-algebra
-RUN opam install -y rocq-mathcomp-stdlib
+RUN opam install -y rocq-stdlib
 RUN opam install -y rocq-mathcomp-zify
 RUN opam install -y rocq-mathcomp-algebra-tactics
 RUN mkdir /home/rocq/ProofAssistantSeminar
