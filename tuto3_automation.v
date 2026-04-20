@@ -69,7 +69,7 @@ Abort.
 
 (* However, [tauto] is intuitionistic by default: it does NOT prove classical
    tautologies like the excluded middle, unless classical logic is explicitly
-   loead.  We can observe this with [Fail]:
+   loaded.  We can observe this with [Fail]:
    [Fail tac.] succeeds exactly when [tac] fails, which is what we want
    here — we want to CHECK that [tauto] fails on a classical principle. *)
 
@@ -441,7 +441,7 @@ Qed.
 (* QUESTION: could we make the following work with an appropriate [Monoid nat]
    instance for multiplication? What would happen to the previous goal if we
    defined such an instance? (Spoiler: there would be two competing [Monoid nat]
-   instances, and Rocq would not be so good at picking the — this is exactly the
+   instances, and Rocq would not be so good at picking the 
    previous one again.
    There are several ways to work around this problem, and the most well known
    is to define one *class* per operation (e.g. AddMonoid, MulMonoid, etc).
@@ -718,7 +718,7 @@ Abort.
 (* SSReflect provides several short forms for finishing goals:
 
      [by tac]   — apply [tac]; if any goal remains, fail
-     [done]     — close a goal by trivial steps
+     [done]     — close a goal by trivial steps, same as [by []]
      [//]       — embedded [done] inside a tactic chain
      [//=]      — embedded [done] after [simpl]
      [=> //]    — introduce and immediately close trivial sub-goals
@@ -920,9 +920,9 @@ Admitted.
 (** *** 7.1  First examples *)
 
 (* [big_ord_recl] / [big_ord_recr] split off the first / last element;
-   [big_ord0] says the empty sum is the identity element.
-   [/=] forces simpl after each rewrite, which fires the numeric
-   computation. *)
+   [big_ord0] says the empty sum is the neutral element.
+   [/=] forces simpl after each rewrite,
+        which simplifies expressions obtained by inference. *)
 
 Example sum_0_to_4 : \sum_(i < 5) i = 10.
 Proof.
